@@ -25,7 +25,7 @@ namespace ReserB.Services
 			Customer customer = new Customer();
 			var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
 			var customerBson = await customersCollection.Find(filter).FirstAsync();
-			customer.Id = customerBson["_id"].AsString;
+			customer.Id = customerBson["_id"].AsObjectId.ToString();
 			customer.EMail = customerBson["email"].AsString;
 			customer.Password = customerBson["contraseña"].AsString;
 			customer.Forenames = customerBson["nombres"].AsString;
@@ -41,7 +41,7 @@ namespace ReserB.Services
 			Customer customer = new Customer();
 			foreach (BsonDocument customerBson in documents)
 			{
-				customer.Id = customerBson["_id"].AsString;
+				customer.Id = customerBson["_id"].AsObjectId.ToString();
 				customer.EMail = customerBson["email"].AsString;
 				customer.Password = customerBson["contraseña"].AsString;
 				customer.Forenames = customerBson["nombres"].AsString;

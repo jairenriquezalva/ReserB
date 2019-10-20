@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReserB.Services
 {
-	public interface IClientRepository
+	public interface ICustomerRepository
 	{
-		Task<IEnumerable<Client>> GetAll();
-		Task InsertOne(Client client);
-		Task<Client> Get(string id);
+		Task<IEnumerable<Customer>> GetAll();
+		Task InsertOne(Customer customer);
+		Task<Customer> Get(string id);
 	}
 }

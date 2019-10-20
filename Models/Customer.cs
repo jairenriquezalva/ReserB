@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ReserB.Models
 {
-	public class Client
+	public class Customer
 	{
 		public string Id { get; set; }
 		public string EMail { get; set; }
