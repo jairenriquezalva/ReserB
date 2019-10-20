@@ -6,64 +6,41 @@ using Microsoft.Extensions.Configuration;
 using ReserB.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ReserB.Services
 {
-	public class CustomerRepository : ICustomerRepository
+	public class CustomerRepository : GenericRepository<Customer, CustomerBson>, ICustomerRepository
 	{
-		IMongoCollection<BsonDocument> customersCollection;
-
-		public CustomerRepository(IConfiguration configuration)
+		public CustomerRepository(IConfiguration configuration, string collectionName) : base(configuration, collectionName)
 		{
-			IMongoClient client = new MongoClient(configuration.GetSection("MongoDB").GetValue<string>("ConnectionString"));
-			IMongoDatabase database = client.GetDatabase(configuration.GetSection("MongoDB").GetValue<string>("Database"));
-			customersCollection = database.GetCollection<BsonDocument>("cliente");
 		}
+	}
 
-		async public Task<Customer> Get(string id)
+	public class CustomerBson : BsonTypeBase<Customer>
+	{
+		
+		[BsonElement("email")]
+		public string Email { get; set; }
+		[BsonElement("contraseña")]
+		public string Password { get; set; }
+		[BsonElement("nombres")]
+		public string Forenames { get; set; }
+		[BsonElement("apellidos")]
+		public string Surnames { get; set; }
+		[BsonElement("fechaNacimiento")]
+		public DateTime Birthdate { get; set; }
+		public override Customer GetBase() {
+			return new Customer() { Id = this.Id, EMail = this.Email, Password = this.Password, Forenames = this.Forenames, Surnames = this.Surnames, Birthdate = this.Birthdate };
+		}
+		public override void SetBase(Customer customer)
 		{
-			Customer customer = new Customer();
-			var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
-			var customerBson = await customersCollection.Find(filter).FirstAsync();
-			customer.Id = customerBson["_id"].AsObjectId.ToString();
-			customer.EMail = customerBson["email"].AsString;
-			customer.Password = customerBson["contraseña"].AsString;
-			customer.Forenames = customerBson["nombres"].AsString;
-			customer.Surnames = customerBson["apellidos"].AsString;
-			customer.Birthdate = customerBson["fechaNacimiento"].ToUniversalTime();
-			return customer;
+			Id = customer.Id;
+			Email = customer.EMail;
+			Password = customer.Password;
+			Forenames = customer.Forenames;
+			Surnames = customer.Surnames;
+			Birthdate = customer.Birthdate;
 		}
-
-		async public Task<IEnumerable<Customer>> GetAll()
-		{
-			var documents = await customersCollection.Find(new BsonDocument()).ToListAsync();
-			List<Customer> customersList = new List<Customer>();
-			Customer customer = new Customer();
-			foreach (BsonDocument customerBson in documents)
-			{
-				customer.Id = customerBson["_id"].AsObjectId.ToString();
-				customer.EMail = customerBson["email"].AsString;
-				customer.Password = customerBson["contraseña"].AsString;
-				customer.Forenames = customerBson["nombres"].AsString;
-				customer.Surnames = customerBson["apellidos"].AsString;
-				customer.Birthdate = customerBson["fechaNacimiento"].ToUniversalTime();
-				customersList.Add(customer);
-			}
-			return customersList;
-		}
-
-		async public Task InsertOne(Customer customer)
-		{
-			var customerDocument = new BsonDocument
-			{
-				{ "email", customer.EMail },
-				{ "contraseña", customer.Password },
-				{ "nombres", customer.Forenames },
-				{ "apellidos", customer.Surnames },
-				{ "fechaNacimiento", customer.Birthdate}
-			};
-			await customersCollection.InsertOneAsync(customerDocument);
-		}
-
 	}
 }

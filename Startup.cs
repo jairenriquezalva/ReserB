@@ -28,7 +28,9 @@ namespace ReserB
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-			services.AddSingleton(typeof(ICustomerRepository), typeof(CustomerRepository));
+			services.AddSingleton<ICustomerRepository>(x =>
+				ActivatorUtilities.CreateInstance<CustomerRepository>(x, "cliente")
+			);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
