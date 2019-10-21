@@ -11,5 +11,6 @@ namespace ReserB.Services
 		Task<IEnumerable<Customer>> GetAll();
 		Task InsertOne(Customer customer);
 		Task<Customer> Get(string id);
+		Task<string> GetPassword(string eMail);
 	}
 }

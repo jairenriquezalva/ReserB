@@ -15,6 +15,12 @@ namespace ReserB.Services
 		public CustomerRepository(IConfiguration configuration, string collectionName) : base(configuration, collectionName)
 		{
 		}
+
+		public async Task<string> GetPassword(string eMail)
+		{
+			var document = await collection.Find((b => b.Email == eMail)).FirstOrDefaultAsync();
+			return document.Password;
+		}
 	}
 
 	public class CustomerBson : BsonTypeBase<Customer>

@@ -13,7 +13,7 @@ namespace ReserB.Services
 		where T : new()
 		where BsonT : BsonTypeBase<T>, new()
 	{
-		IMongoCollection<BsonT> collection;
+		protected IMongoCollection<BsonT> collection;
 		
 		public GenericRepository(IConfiguration configuration, string collectionName)
 		{
