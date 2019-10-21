@@ -16,6 +16,12 @@ namespace ReserB.Services
 		{
 		}
 
+		public async Task<Customer> GetByEmail(string eMail)
+		{
+			var document = await collection.Find((b => b.Email == eMail)).FirstOrDefaultAsync();
+			return document?.GetBase();
+		}
+
 		public async Task<string> GetPassword(string eMail)
 		{
 			var document = await collection.Find((b => b.Email == eMail)).FirstOrDefaultAsync();

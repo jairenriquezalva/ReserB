@@ -12,5 +12,6 @@ namespace ReserB.Services
 		Task InsertOne(Customer customer);
 		Task<Customer> Get(string id);
 		Task<string> GetPassword(string eMail);
+		Task<Customer> GetByEmail(string eMail);
 	}
 }

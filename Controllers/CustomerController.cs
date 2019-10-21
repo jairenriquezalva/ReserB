@@ -25,21 +25,27 @@ namespace ReserB.Controllers
 		async public Task<ActionResult> GetCustomers()
 		{
 			var customers = await _customerRepository.GetAll();
-			return new JsonResult(customers); 
+			var response = customers.Select(customer => new { customer.Id, customer.EMail, customer.Forenames, customer.Surnames, customer.Birthdate });
+			return new JsonResult(response); 
 		}
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult> GetCustomer(string id)
 		{
 			var customer = await _customerRepository.Get(id);
-			return new JsonResult(customer);
+			return new JsonResult(new { customer.Id, customer.EMail, customer.Forenames, customer.Surnames, customer.Birthdate });
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> InsertCustomer(Customer customer)
 		{
-			await _customerRepository.InsertOne(customer);
-			return StatusCode(StatusCodes.Status201Created);
+			var existingCustomer = await _customerRepository.GetByEmail(customer.EMail);
+			if (existingCustomer == null)
+			{
+				await _customerRepository.InsertOne(customer);
+				return StatusCode(StatusCodes.Status201Created);
+			}
+			return StatusCode(StatusCodes.Status403Forbidden);
 		}
 	}
 }
