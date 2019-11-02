@@ -16,7 +16,7 @@ namespace ReserB.Controllers
 
 		ICustomerRepository _customerRepository; 
 
-		ppublic CustomerController(ICustomerRepository customerRepository)
+		public CustomerController(ICustomerRepository customerRepository)
 		{
 			_customerRepository = customerRepository;
 		}
