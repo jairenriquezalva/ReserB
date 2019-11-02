@@ -10,7 +10,7 @@ namespace ReserB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController :  ControllerBase
     {
 		readonly LoginService _service;
 		
