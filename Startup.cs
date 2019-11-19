@@ -33,6 +33,9 @@ namespace ReserB
 			services.AddSingleton<ICustomerRepository>(x =>
 				ActivatorUtilities.CreateInstance<CustomerRepository>(x, "cliente")
 			);
+			services.AddSingleton<IProviderRepository>(x =>
+				ActivatorUtilities.CreateInstance<ProviderRepository>(x, "proveedor")
+			);
 			services.AddSingleton<LoginService>();
 		}
 

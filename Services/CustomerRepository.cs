@@ -18,13 +18,13 @@ namespace ReserB.Services
 
 		public async Task<Customer> GetByEmail(string eMail)
 		{
-			var document = await collection.Find((b => b.Email == eMail)).FirstOrDefaultAsync();
+			var document = await collection.Find((b => b.EMail == eMail)).FirstOrDefaultAsync();
 			return document?.GetBase();
 		}
 
 		public async Task<string> GetPassword(string eMail)
 		{
-			var document = await collection.Find((b => b.Email == eMail)).FirstOrDefaultAsync();
+			var document = await collection.Find((b => b.EMail == eMail)).FirstOrDefaultAsync();
 			return document.Password;
 		}
 	}
@@ -33,7 +33,7 @@ namespace ReserB.Services
 	{
 		
 		[BsonElement("email")]
-		public string Email { get; set; }
+		public string EMail { get; set; }
 		[BsonElement("contraseña")]
 		public string Password { get; set; }
 		[BsonElement("nombres")]
@@ -43,12 +43,12 @@ namespace ReserB.Services
 		[BsonElement("fechaNacimiento")]
 		public DateTime Birthdate { get; set; }
 		public override Customer GetBase() {
-			return new Customer() { Id = this.Id, EMail = this.Email, Password = this.Password, Forenames = this.Forenames, Surnames = this.Surnames, Birthdate = this.Birthdate };
+			return new Customer() { Id = this.Id, EMail = this.EMail, Password = this.Password, Forenames = this.Forenames, Surnames = this.Surnames, Birthdate = this.Birthdate };
 		}
 		public override void SetBase(Customer customer)
 		{
 			Id = customer.Id;
-			Email = customer.EMail;
+			EMail = customer.EMail;
 			Password = customer.Password;
 			Forenames = customer.Forenames;
 			Surnames = customer.Surnames;
