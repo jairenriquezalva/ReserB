@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ReserB.Middleware;
 using ReserB.Services;
+using ReserB.Services.Contracts;
 
 namespace ReserB
 {
@@ -35,6 +36,12 @@ namespace ReserB
 			);
 			services.AddSingleton<IProviderRepository>(x =>
 				ActivatorUtilities.CreateInstance<ProviderRepository>(x, "proveedor")
+			);
+			services.AddSingleton<ISectorRepository>(x =>
+				ActivatorUtilities.CreateInstance<SectorRepository>(x, "rubro")
+			);
+			services.AddSingleton<ICategoryRepository>(x =>
+				ActivatorUtilities.CreateInstance<CategoryRepository>(x, "categoria")
 			);
 			services.AddSingleton<LoginService>();
 		}
