@@ -43,6 +43,12 @@ namespace ReserB
 			services.AddSingleton<ICategoryRepository>(x =>
 				ActivatorUtilities.CreateInstance<CategoryRepository>(x, "categoria")
 			);
+			services.AddSingleton<ISpaceRepository>(x =>
+				ActivatorUtilities.CreateInstance<SpaceRepository>(x, "espacio")
+			);
+			services.AddSingleton<IReservationRepository>(x =>
+				ActivatorUtilities.CreateInstance<ReservationRepository>(x, "reserva")
+			);
 			services.AddSingleton<LoginService>();
 		}
 
