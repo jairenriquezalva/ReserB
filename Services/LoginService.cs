@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReserB.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,12 +13,20 @@ namespace ReserB.Services
 		{
 			_customerRepository = customerRepository;
 		}
-		async public Task<bool> Login(string email, string password)
+		async public Task<Customer> Login(string email, string password)
 		{
-			var expectedPassword = await _customerRepository.GetPassword(email);
-			if(password == expectedPassword)
-				return true;
-			return false;
+			var user = await _customerRepository.GetByEmail(email);
+			if(user != null)
+			{
+				if (password == user.Password)
+					return user;
+				return new Customer() {Id = "0" };
+			}
+			else
+			{
+				return new Customer() { Id = "-1" };
+			}
+			
 		}
 	}
 }

@@ -22,12 +22,16 @@ namespace ReserB.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Login(Credentials credentials)
 		{
-			if (await _service.Login(credentials.EMail, credentials.Password))
+			var customer = await _service.Login(credentials.EMail, credentials.Password);
+			if (customer.Id != "-1" && customer.Id != "0")
 			{
 				HttpContext.Session.SetString("user", credentials.EMail);
-				return StatusCode(StatusCodes.Status202Accepted);
+				return new JsonResult(new {status = "success", customer });
+			}else if (customer.Id != "0")
+			{
+				return new JsonResult(new { status = "invalid username" });
 			}
-			return StatusCode(StatusCodes.Status401Unauthorized);
+			return new JsonResult(new {status = "invalid password" });
 		}
 
 		public class Credentials
