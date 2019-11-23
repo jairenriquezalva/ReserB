@@ -34,6 +34,22 @@ namespace ReserB.Controllers
 			return new JsonResult(new {status = "invalid password" });
 		}
 
+		[HttpPost("provider")]
+		public async Task<ActionResult> LoginProvider(Credentials credentials)
+		{
+			var provider = await _service.LoginProvider(credentials.EMail, credentials.Password);
+			if(provider.Id != "-1" && provider.Id != "0")
+			{
+				HttpContext.Session.SetString("user", credentials.EMail);
+				return new JsonResult(new { status = "succes", provider });
+			}
+			else if( provider.Id != "0")
+			{
+				return new JsonResult(new { status = "invalid username" });
+			}
+			return new JsonResult(new { status = "invalid password" });
+		}
+
 		public class Credentials
 		{
 			public string EMail { get; set; }
