@@ -43,9 +43,9 @@ namespace ReserB.Controllers
 			if (existingCustomer == null)
 			{
 				await _customerRepository.InsertOne(customer);
-				return StatusCode(StatusCodes.Status201Created);
+				return new JsonResult(new { Status= "success" });
 			}
-			return StatusCode(StatusCodes.Status403Forbidden);
+			return new JsonResult(new { Status = "failed" });
 		}
 	}
 }
