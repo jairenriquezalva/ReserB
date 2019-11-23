@@ -41,7 +41,7 @@ namespace ReserB.Controllers
 			if(provider.Id != "-1" && provider.Id != "0")
 			{
 				HttpContext.Session.SetString("user", credentials.EMail);
-				return new JsonResult(new { status = "succes", provider });
+				return new JsonResult(new { status = "success", provider });
 			}
 			else if( provider.Id != "0")
 			{
