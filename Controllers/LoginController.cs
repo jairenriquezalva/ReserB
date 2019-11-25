@@ -40,6 +40,9 @@ namespace ReserB.Controllers
 			var provider = await _service.LoginProvider(credentials.EMail, credentials.Password);
 			if(provider.Id != "-1" && provider.Id != "0")
 			{
+				var option = new CookieOptions();
+				option.Expires = DateTime.Now.AddMinutes(10);
+				Response.Cookies.Append("EmailEnviado", "true",option);
 				HttpContext.Session.SetString("user", credentials.EMail);
 				return new JsonResult(new { status = "success", provider });
 			}
