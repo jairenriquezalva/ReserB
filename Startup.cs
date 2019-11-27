@@ -34,7 +34,7 @@ namespace ReserB
 					   .AllowAnyMethod()
 					   .AllowAnyHeader();
 			}));
-			services.AddDistributedMemoryCache();
+			services.AddMemoryCache();
 			services.AddSession();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSingleton<ICustomerRepository>(x =>
