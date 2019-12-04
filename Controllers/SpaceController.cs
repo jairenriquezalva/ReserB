@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReserB.Models;
+using ReserB.Services;
 using ReserB.Services.Contracts;
 
 namespace ReserB.Controllers
@@ -14,10 +15,12 @@ namespace ReserB.Controllers
     public class SpaceController : ControllerBase
     {
 		ISpaceRepository _spaceRepository;
+		IProviderRepository _providerRepository;
 
-		public SpaceController(ISpaceRepository spaceRepository)
+		public SpaceController(ISpaceRepository spaceRepository, IProviderRepository providerRepository)
 		{
 			_spaceRepository = spaceRepository;
+			_providerRepository = providerRepository;
 		}
 
 		[HttpPost]
@@ -37,8 +40,10 @@ namespace ReserB.Controllers
 		[HttpGet("category/{id}")]
 		public async Task<ActionResult> GetSpaceByCategory(string id)
 		{
-			var customer = await _spaceRepository.GetByCategory(id);
-			return new JsonResult(customer);
+			var spaces = await _spaceRepository.GetByCategory(id);
+			var NewspacesTemp = spaces.Select(async space => new { space.Id, Provider = await _providerRepository.Get(space.Provider), space.Category, space.Name, space.Photos, space.Price, space.Schedule, space.BookingSchedule });
+			var Newspaces = await Task.WhenAll(NewspacesTemp);
+			return new JsonResult(Newspaces);
 		}
 	}
 }
